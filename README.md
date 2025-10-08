@@ -19,6 +19,7 @@
 # Installation (Ubuntu Example)
 ```bash
 sudo apt update
+
 sudo apt install ansible -y
 
 # Check if installed
@@ -34,3 +35,35 @@ ansible --version
 ansible-playbook playbook.yml -i inventory
 ```
 4. Ansible connects via SSH (no agents needed) and executes the tasks.
+
+# Example: Simple Playbook *exmaple.yaml*
+```yaml
+
+- name: Install Nginx on web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+```
+
+# Example Inventory File *inventry*
+
+```yaml
+[webservers]
+192.168.10.10
+192.168.10.11
+
+[dbservers]
+192.168.10.20
+```
+**That means:**
+- There are two web servers and one database server.
+- We can target [webservers], [dbservers], or all.
+
+# Run the Playbook
+```bash
+ansible-playbook -i inventory.ini nginx.yml
+```
